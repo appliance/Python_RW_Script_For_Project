@@ -1,0 +1,101 @@
+employee表-员工表：
+eid 员工编号
+pid 项目编号(外键，指向project表id)
+name 姓名
+sex 性别
+birthday 出生年月
+work_age 工龄（年）
+education_background 学历
+department 部门   
+category 人员类别    
+level 人员级别
+price 人员单价
+source 成员来源
+outsource_company 所属外包公司
+localize 是否本地化  
+post 岗位名称   
+status 人员状态
+job_type 岗位类型
+attendance_status 考勤状态  
+responsibility 本项目工作职责
+planned_start_time 计划开始时间
+project_entry_time 进入项目时间
+planned_finish_time 计划结束时间
+leave_project_time 离开项目时间
+leave_reason 离开原因 
+on_duty_months 在岗时长（月）
+address 地点
+remark 备注
+p_explain 说明
+personnel_status 人员在职离职状态
+attendance_id  打卡项目
+
+*****************************************************************************************************************
+
+project表-项目表：
+WBS WBS号 ----->（项目执行表）
+order_number 销售订单号----->（项目执行表）
+contract_number 合同号 ----->（项目执行表）
+contract_name 合同名称-----> (项目执行表）
+contract_money 合同总金额----->（项目执行表）
+invoiced_rate 已开票比例----->（项目执行表）
+use_rate 已投运比例----->（项目执行表）
+pay_received_rate 已回款比例----->（项目执行表）
+pay_type 付款方式----->（项目执行表）
+contract_sign_date 合同签约时间----->（项目执行表）
+warranty_expiration_date 质保到期日----->（项目执行表）
+contract_confirmed_money 合同收入确认总金额----->（项目执行表）
+money_confirm 财务对账是否一致----->（项目执行表）
+project_site_leader 项目现场负责人----->（项目执行表）
+project_leader_contact 项目现场负责人联系方式----->（项目执行表）
+system_project_leader 系统项目负责人----->（项目执行表）
+
+contract_nature 合同性质----->（项目综合信息表）
+project_manager 项目经理----->（项目综合信息表）
+project_status 项目状态----->（项目综合信息表）
+planned_income 计划收入----->（项目综合信息表）
+margin_rate 毛利率----->（项目综合信息表）
+planned_labor_cost 计划人工成本----->（项目综合信息表）
+planned_travel_cost 计划差旅费----->（项目综合信息表）
+outsource_service_cost 计划外包服务费----->（项目综合信息表）
+technical_subcontract_cost 计划技术分包费----->（项目综合信息表）
+hardware_software_cost 计划软硬件费用----->（项目综合信息表）
+planned_other_cost 计划其他费用----->（项目综合信息表）
+total_budget 预算合计----->（项目综合信息表）
+actual_total_cost 实际发生成本总计----->（项目综合信息表）
+actual_labor_cost 实际人工费已入账----->（项目综合信息表）
+actual_service_cost 实际服务费入账----->（项目综合信息表）
+actual_material_cost 实际材料费入账----->（项目综合信息表）
+actual_manufacturing_cost 实际制造费入账----->（项目综合信息表）
+actual_other_cost实际其他入账----->（项目综合信息表）
+actual_not_recorded 实际未入账含税----->（项目综合信息表）
+estimated_service_cost 预估服务费----->（项目综合信息表）
+purchase_status 是否采购----->（项目综合信息表）
+total_purchase_cost 采购总额----->（项目综合信息表）
+
+planned_acceptance_date 计划验收日期----->（项目进度跟踪表）
+
+
+
+
+*****************************************************************************************************************
+purchase表-采购表：
+id 主键
+pid 外键，对应project表中的id
+purchase_order 采购订单
+contract_name 合同名称
+supplier 供应商名称
+contract_type 合同类型
+payment_terms 付款条件
+payment_rate 付款率
+contract_money 合同总额
+refunds_rate 项目回款比例
+receive_money 已收票
+backtoback_money 背靠背可付金额
+actual_payment 实际已付款
+unpaid_money 未付款
+backtoback_debt 背靠背欠款金额
+cost_confirmed 确认成本金额
+cost_rate 入成本比例
+not_cost_monet 未入成本金额
+
