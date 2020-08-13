@@ -1,10 +1,12 @@
-from dbHelper import DBHelper
-import  xlrd
+from project_purchase.dbHelper import DBHelper
+from project_purchase.db_config import db_config
+import xlrd
 
 class ImportPurchaseInfo:
-    def __init__(self, excel_url):
-        self.excel_url = excel_url
+    def __init__(self):
+        self.excel_url = db_config['excel_url']
         self.excel_property_name_2_sql_dir = {
+            'WBS号': 'WBS',
             '采购订单': 'purchase_order', '合同名称': 'contract_name ',
             '供应商名称': 'supplier ', '合同类型': 'contract_type', '付款条件': 'payment_terms',
             '付款率': 'payment_rate', '合同总额': 'contract_money', '项目回款比例': 'refunds_rate',
@@ -14,6 +16,7 @@ class ImportPurchaseInfo:
 
         }
         self.excel_property_type_dir = {
+            'WBS号': 'str',
             '采购订单': 'str', '合同名称': 'str',
             '供应商名称': 'str', '合同类型': 'str', '付款条件': 'str',
             '付款率': 'float', '合同总额': 'float', '项目回款比例': 'float',
@@ -71,18 +74,19 @@ class ImportPurchaseInfo:
             if str(sheet.cell(0, col_index).value).replace('\n', '') in self.excel_property_name_2_sql_dir.keys():
                 property_type = self.excel_property_type_dir[sheet.cell(0, col_index).value]
                 if property_type == 'str':
-                    purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = str(sheet.cell(row, col_index).value)
-                    # 订单号单独处理
-                    if sheet.cell(0, col_index).value == '采购订单':
-                        if sheet.cell(row, col_index).value != '':
-                            purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = str(int(sheet.cell(row, col_index).value)).replace('\n', '')
+                    if sheet.cell(row, col_index).value == '':
+                        purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = None;
+                    else:
+                        # '采购订单号 代码读取后会自动在末尾加.0'
+                        if sheet.cell(0, col_index).value == '采购订单':
+                            purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = str(int(sheet.cell(row, col_index).value))
                         else:
-                            purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = None
+                            purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = str(sheet.cell(row, col_index).value)
                 elif property_type == 'float':
                     if sheet.cell(row, col_index).value == '':
                         purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = None;
                     else:
-                        purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = round(sheet.cell(row, col_index).value, 12)
+                        purchase_info_dir[self.excel_property_name_2_sql_dir[sheet.cell(0, col_index).value]] = float(sheet.cell(row, col_index).value)
         return purchase_info_dir
 
     """
@@ -114,3 +118,20 @@ class ImportPurchaseInfo:
             params.append(purchase_info_dir.get(key))
         return sql, list(params)
 
+
+    '''
+        依据 wbs号 和 采购订单号 检索采购记录是否已插入数据库
+        :param wbs, purchase_order
+        :return True/False
+    '''
+    def is_exist(self, wbs, purchase_order):
+        dbHelper = DBHelper()
+        dbHelper.connect_database()
+        sql = 'select count(*) from purchase where WBS = %s and purchase_order = %s'
+        param = [wbs, purchase_order]
+        res = dbHelper.select(sql, param)
+        dbHelper.close_database()
+        if res[0][0] == 0:
+            return False
+        else:
+            return True
