@@ -5,5 +5,5 @@ db_config = {
     'password': 'root',
     'database': 'project',
     'charset': 'utf8',
-    'excel_url': 'D:/Desktop/工作/2020.07.25_员工管理项目数据读写脚本/项目数据插入脚本/project_info/excel/demo.xlsx'
+    'excel_url': 'C:/Users/jc/Desktop/工作/project_excel_latest/项目各类表.xlsx'
 }

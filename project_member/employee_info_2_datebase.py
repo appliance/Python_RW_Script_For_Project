@@ -27,7 +27,7 @@ class ImportEmployeeInfo:
         self.excel_property_type_dir = {
             '姓名': 'str', '性别': 'str', '出生年月': 'date', '工龄\n（年）': 'str',
             '学历': 'str', '外包部门': 'str', '人员类别': 'str',
-            '级别': 'str', '人员单价': 'str', '成员来源': 'str', '所属外包公司': 'str',
+            '级别': 'str', '单价\n（元）': 'int', '成员来源': 'str', '所属外包公司': 'str',
             '是否本地化': 'str', '岗位名称': 'str', '人员状态': 'str', '岗位类型': 'str',
             '考勤\n状态': 'str', '本项目工作职责': 'str', '计划开\n始时间': 'date',
             '进入项目时间': 'date', '计划结\n束时间': 'date',
@@ -172,4 +172,21 @@ class ImportEmployeeInfo:
             return True
         else:
             return False
+
+
+    '''
+        插入新项目到project表中,返回pid
+        :param wbs
+        :return pid
+    '''
+    def insert_get_pid(self, wbs):
+        dbHelper = DBHelper()
+        dbHelper.connect_database()
+        sql = "insert into project (WBS) values (%s);"
+        param = wbs
+        dbHelper.excute(sql, param)
+        sql = "select id from project where WBS = %s;"
+        res = dbHelper.select(sql, param)
+        dbHelper.close_database()
+        return res[0][0]
 

@@ -2,7 +2,12 @@ step1：
     数据预处理：将excel文件中，错误信息删除
     WBS:B24623190022/B24623190023 请将该表拆成两个表
     将非人员信息表的表格（如外包人员信息表等）尽量去除 以免发生未知错误
-    使用该脚本，尽量保证wbs号，在project数据库中已录入，否则人员对应pid为空
+
+
+    使用该脚本，尽量保证项目wbs号存在，且在project数据库中已录入，
+    情况1：若excel导入数据中，wbs不存在，pid为空
+    情况2：若excel导入数据中wbs号存在，project表中不存在该wbs号，则自动将该项目插入project表中，获取对应pid
+    情况3：若excel导入数据中wbs号存在，project表中存在该wbs号，则返回对应pid
 
 step2:
     修改db_config.py 配置文件

@@ -33,6 +33,9 @@ def main():
                 # 获取pid
                 if wbs != None:
                     pid = importEmployeeInfo.get_pid_by_wbs(wbs)
+                    # 若pid 为 None 则将该项目新添加到project中
+                    if pid == None:
+                        pid = importEmployeeInfo.insert_get_pid(wbs)
                 else:
                     pid = None
 
@@ -53,6 +56,7 @@ def main():
                     sql, params = importEmployeeInfo.create_insert_sql_by_dir(employee_info_dir=employee_info_dir)
                     # 判断是否插入
                     if importEmployeeInfo.is_exist(pid=pid, name=employee_info_dir['name']) == False:
+                        print(employee_info_dir)
                         dbHelper.excute(sql=sql, params=params)
                         # 提示信息
                         insert_total_num += 1
